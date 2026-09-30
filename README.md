@@ -47,3 +47,7 @@ To export it, save the capture script from `SKILL.md` as `film-capture.mjs`, the
 ```bash
 node film-capture.mjs examples/film-template.html film.mp4
 ```
+
+## License
+
+[MIT](LICENSE)
