@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Film exports and render output
+*.mp4
+*.wav
+frames/
+
+# Node
+node_modules/
