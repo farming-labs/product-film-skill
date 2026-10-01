@@ -1,6 +1,6 @@
 ---
 name: product-film
-description: Make a product launch / promo video as one self-contained HTML file (picture + synthesized soundtrack driven by a single render(t) function), preview it in the browser, and export a frame-exact 1080p60 MP4 with audio via headless Chrome + ffmpeg. Use this whenever someone wants a launch video, promo or teaser, sizzle reel, animated product demo, "a video of our app/UI", motion graphics, a social clip, or wants to re-time, re-cut, re-score or re-export an existing film.html — even if they never say "HTML".
+description: Make a product launch / promo video as one self-contained HTML file (picture + synthesized soundtrack driven by a single render(t) function), preview it in the browser, and export a frame-exact 1080p60 MP4 with audio via headless Chrome + ffmpeg. Use this whenever someone wants a launch video, promo or teaser, sizzle reel, animated product demo, "a video of our app/UI", motion graphics, a social clip, shares reference videos they want a film to feel like, or wants to re-time, re-cut, re-score or re-export an existing film.html — even if they never say "HTML".
 ---
 
 # Product film
@@ -13,11 +13,49 @@ Why this shape: the film stays text (diffable, reviewable, easy to re-time), pic
 
 ## Workflow
 
+0. **Gather inspiration.** Ask whether the user has reference videos or a look they want. Their references always come first. If they have none, offer the house references below. Either way, turn the references into a short borrow list before storyboarding (see *Inspiration*).
 1. **Storyboard first.** Write a table: scene id, start–end in seconds, the one thing the viewer must understand, and the beat it lands on. Get the user's sign-off on the story before you polish anything. See *Pacing* below; most first cuts are too fast.
 2. **Build `film.html`** on the engine contract below. Open it straight from disk (`file://` works). Space plays, ←/→ step one frame, `,` and `.` jump one second, `?t=7.5` opens at a time, `?clean` hides the controls.
 3. **Score it.** Put a sound on every on-screen action (see *Sound*).
 4. **Verify by looking.** Render stills at key moments and read them (see *Verify*). Check scene boundaries, each click, and each "done" state.
 5. **Export** with the capture script. Run it in the background, since it takes about 3–5 seconds of real time per second of film at 60fps. Then pull a few frames from the MP4 itself, and deliver the MP4 with a contact sheet and a line giving its length, resolution and size.
+
+## Inspiration
+
+A film looks better when it borrows from something specific instead of from "a nice launch video" in general. So start from real references, and be explicit about what you're taking from each.
+
+### Use the user's own references first
+
+The user may bring links (X/Twitter, YouTube, Vimeo, a site's hero video), local files, screenshots or just a description ("like Linear's launch videos"). Any of those beats the house list, and you can mix several. If they reference something you can't open, ask for a link or a few screenshots rather than guessing what it looks like.
+
+### Study a reference before you copy anything from it
+
+1. **Look at it.** For a local file, grab stills with `ffmpeg -ss <t> -i ref.mp4 -frames:v 1 ref-<t>.png` every 2–5 seconds. For an online video, open the direct video URL in a browser tab, then seek it with `video.currentTime = t` and take screenshots. Drawing a cross-origin video onto a canvas gives you blank frames, so screenshot the page instead. Ask the user before saving someone else's video file to disk.
+2. **Write a borrow list.** For each reference, list three to six concrete techniques, each with a timestamp. For example: "0:06, the word swaps from *for* to *with* through a blur crossfade" or "0:44, the end line has an icon in an inline pill". Also note the pace, meaning roughly how many seconds each shot holds and how long the whole thing runs.
+3. **Show the borrow list with the storyboard**, so the user can say "more of this, less of that" before any building starts.
+4. **Borrow the craft, not the identity.** Take structure, rhythm and motion ideas. Don't copy another company's logo, wordmark, footage, music or exact copy, and don't make the film read as theirs. Use the user's own product, colors and words.
+
+### Live action and footage
+
+This pipeline draws everything in HTML, so it can't shoot people. If a reference uses live action (like the Cardboard skit), borrow its *structure*, for example a human cold open → product → montage → quiet logo. Then either tell the user they'll need to cut in their own footage afterwards, or stand in for the human moment with a typed line of dialogue or a chat bubble.
+
+### House references
+
+These two videos shaped the assistant-ui launch film this skill came from. Offer them when the user has no references of their own, or when they ask for "something like what we did before".
+
+| Reference | Length | What to borrow |
+|---|---|---|
+| **Keiki for agencies** by Nizzy ([x.com/nizzyabi/status/2104587269621612997](https://x.com/nizzyabi/status/2104587269621612997)) | 47s | A soft, blurred blue-gradient background behind everything. Kinetic type where one word in a sentence swaps for another through a blur ("for / with all agencies"). The request typed into a rounded prompt box. A capabilities panel whose toggles switch on. Real product UI (a feed, an inbox) with slow camera drifts. An end line with an inline icon pill: "find new [icon] clients today". Calm, airy, light. |
+| **Cardboard** by Saksham ([x.com/sxmawl/status/2104996131419856928](https://x.com/sxmawl/status/2104996131419856928)) | 81s | A cold open on a human, funny moment before any product appears. A hard cut to a dark screen recording of the product. A prompt typed live with the cursor visible, then the result appearing. A fast collage montage of outputs that builds energy. A quiet small logo on black to close. Confident, playful, punchy. |
+
+What the assistant-ui film took from them: the typed prompt and staged result from both, the dark UI with a visible cursor from Cardboard, kinetic word swaps and an inline icon chip from Keiki, and the quiet end card from Cardboard.
+
+### When there's no reference at all
+
+Pick a mood with the user in one line ("calm and premium", "fast and playful", "technical and precise"), then match it:
+- **Calm and premium:** soft gradients, long holds of 1.5–2s, one move at a time, a pad-led score.
+- **Fast and playful:** hard cuts on the beat, montages, chips that overshoot when they pop, a drum-led score.
+- **Technical and precise:** mono type, a terminal and code that stream in, grid layouts, plucks and key ticks.
 
 ## Engine contract
 

@@ -2,7 +2,9 @@
 
 A Claude skill for making product launch and promo videos. The film is one HTML file: a 1920×1080 stage, a scene timeline, a pure `render(t)` function, and a soundtrack synthesized from the same timeline. You preview it in the browser, and a small script exports a frame-exact 1080p60 MP4 with audio through headless Chrome and ffmpeg.
 
-Once installed, ask Claude for a launch video, promo, teaser or animated product demo and it follows the skill: storyboard, build, score, check frames, export.
+Once installed, ask Claude for a launch video, promo, teaser or animated product demo and it follows the skill: gather inspiration, storyboard, build, score, check frames, export.
+
+Bring your own reference videos (links, files or screenshots) and Claude studies them and shows you what it plans to borrow before building. With no references, it offers the two house references the skill ships with.
 
 ## Install
 
