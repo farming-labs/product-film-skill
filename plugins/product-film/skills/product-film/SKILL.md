@@ -200,10 +200,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const dir = mkdtempSync(join(tmpdir(), 'film-chrome-'));
 const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=0', '--window-size=1920,1080', '--hide-scrollbars',
   '--autoplay-policy=no-user-gesture-required', '--disk-cache-size=1', '--no-first-run', `--user-data-dir=${dir}`, 'about:blank'], { stdio: 'ignore' });
-const cleanup = () => { try { chrome.kill('SIGKILL'); } catch {} rmSync(dir, { recursive: true, force: true }); };
+const cleanup = () => { try { chrome.kill('SIGKILL'); } catch {} try { rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); } catch {} };
 process.on('exit', cleanup); process.on('SIGINT', () => process.exit(130));
 
-let port; for (let i = 0; i < 100 && !port; i++) { try { port = readFileSync(join(dir, 'DevToolsActivePort'), 'utf8').split('\n')[0]; } catch { await sleep(100); } }
+let port; for (let i = 0; i < 300 && !port; i++) { try { port = readFileSync(join(dir, 'DevToolsActivePort'), 'utf8').split('\n')[0]; } catch { await sleep(100); } }
 const targets = await (await fetch(`http://127.0.0.1:${port}/json`)).json();
 const ws = new WebSocket(targets.find(t => t.type === 'page').webSocketDebuggerUrl);
 await new Promise(r => (ws.onopen = r));
