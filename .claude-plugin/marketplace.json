@@ -2,7 +2,7 @@
   "name": "product-film-skill",
   "description": "Claude skills for making product videos.",
   "owner": {
-    "name": "Kinfe123"
+    "name": "farming-labs"
   },
   "plugins": [
     {
