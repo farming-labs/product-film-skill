@@ -11,14 +11,14 @@ Bring your own reference videos (links, files or screenshots) and Claude studies
 **Claude Code (recommended)**
 
 ```
-/plugin marketplace add Kinfe123/product-film-skill
+/plugin marketplace add farming-labs/product-film-skill
 /plugin install product-film@product-film-skill
 ```
 
 **Manual**
 
 ```bash
-git clone https://github.com/Kinfe123/product-film-skill.git
+git clone https://github.com/farming-labs/product-film-skill.git
 mkdir -p ~/.claude/skills
 cp -r product-film-skill/plugins/product-film/skills/product-film ~/.claude/skills/
 ```
