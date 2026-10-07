@@ -155,6 +155,27 @@ async function renderScore(){                 // swap the live context for an of
 
 A simple chord loop sounds fine: Am, F, C, G, two bars each. Drop the drums for the second before a cut so the riser has room. Check the levels: the peak must stay below 1.0 (no clipping), and the body of the film should sit around -20 to -26 dBFS RMS per scene. The intro and outro can be quieter.
 
+### Sampled sound effects (memes.md)
+
+When a moment wants a real clip the instruments can't fake — a comedic beat, a reaction, a win/fail sting, a voice line, a "ta-da" — pull it from [memes.md](https://memes.md/): ~1,800 meme sound effects tagged by mood and category, searchable by agents.
+
+```bash
+curl -s 'https://memes.md/api/sounds?q=tada&maxDuration=3'
+# → {results:[{name, url (direct MP3), durationSec, loudnessLufs, truePeakDb, category, tags, mood, energy, kind}]}
+```
+
+Search `q` by words, filter with `maxDuration` (seconds) and `mood` (e.g. `funny`, `hype`, `wholesome`). Prefer short clips whose reported `loudnessLufs` already sits near the film's body level; re-gain the rest in the instrument.
+
+Samples join the film without breaking its two guarantees (one self-contained file, exact export):
+
+- **Embed, never link.** Download the MP3 and inline it as a base64 data URI; a remote URL dies offline and breaks the export. A clip under 3s adds ~50-100KB — budget one or two accents, not a library.
+- **Schedule it like everything else.** Decode once during setup (`const TADA = await AC.decodeAudioData(await (await fetch(DATA_URI)).arrayBuffer())`), add a sample instrument (`I.clip=(a,buf,g=.8)=>{const s=AC.createBufferSource();s.buffer=buf;const gn=AC.createGain();gn.gain.value=g;s.connect(gn).connect(OUT_BUS);s.start(a)}`), then cue it from the same list: `at(S.s3[0]+C3.done, a=>I.clip(a, TADA))`. An `AudioBuffer` is context-independent, so `renderScore()` replays it bit-identically through the `OfflineAudioContext`.
+- **Gate `ready` on the decode** alongside `document.fonts.ready`, or the first frames can render before the clip exists.
+- **Mix to the same targets:** trim silence off the clip's head so the hit lands on the cue, and keep it inside the -20 to -26 dBFS body / sub-1.0 peak rules above — meme clips are often mastered hot, so pull the gain down.
+- **Check rights before publishing.** memes.md clips are unlicensed ("check rights before publishing" per the site). They're fine for drafts and internal previews; for a public launch film, confirm the rights or swap the clip for a synthesized equivalent before the final export.
+
+The synthesized score stays the backbone — samples are seasoning on top of it, not a replacement for it.
+
 ## Verify
 
 Render stills and look at them yourself before you export. Most bugs are only visible in a frame: text clipped by its container, overlapping cards, an element that scrolled off, the cursor missing its button at click time, a scene boundary that flashes.
